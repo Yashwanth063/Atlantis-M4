@@ -1,0 +1,43 @@
+# Node.js
+node_modules/
+
+# React
+build/
+dist/
+coverage/
+GlbModels/
+models/
+
+# Express.js
+dist/
+.env
+src/assets/glb
+# Visual Studio Code
+.vscode/
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+
+# Tests
+__tests__/
+test/
+
+# Dependency directories
+.pnpm/
+.pnpm-debug.log
+
+# Yarn
+yarn-error.log
+yarn.lock
+
+*.DS_Store
+
+# Zip, GLB and Rar files
+*.zip
+*.rar
+*.glb
+

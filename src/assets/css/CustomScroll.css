@@ -1,0 +1,22 @@
+/* .ps {
+    overflow: hidden !important;
+}
+
+.ps__rail-x,
+.ps__rail-y {
+    background: url('../img/games/Leaderboard\ Scroll\ Bar.png') no-repeat center center;
+    background-size: contain;
+}
+
+.ps__thumb-x,
+.ps__thumb-y {
+    background: url('../img/games/Leaderboard\ Scroll\ Cross.png') no-repeat center center;
+    background-size: contain;
+    border-radius: 10px;
+    min-height: 20px;
+    
+}
+
+.ps__thumb-y {
+    background-clip: padding-box;
+} */
