@@ -18,7 +18,8 @@ import {
   CustomRankingIcon,
   CustomSettingsIcon,
 } from '../../../../components/ui/CustomIcons';
-// import imgBackground from '/images/background.png';
+import imgBackground from '../../../../assets/img/NewUI_Images/background.png';
+import topNav from '../../../../assets/img/NewUI_Images/topnav.png';
 import { useColor } from '../../../../components/ui/ColorContext';
 import ColorPicker from '../../../../components/ui/ColorPicker';
 import { Slider } from '../../../../components/ui/slider';
@@ -30,19 +31,24 @@ import {
 import { getGameById, getSkillsName } from 'utils/game/gameService';
 import { ProfileContext } from '../EntirePreview';
 import Scrollbar from 'components/customScroll/CustomScroll';
+import { useParams } from 'react-router-dom';
+
+
+
+
 
 // Helper function to convert hex to RGB
 const hexToRgb = (hex: string): string => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) return '0, 255, 187'; // fallback to default green
+  if (!result) return "0, 255, 187"; // fallback to default green
   const r = Number.parseInt(result[1], 16);
   const g = Number.parseInt(result[2], 16);
   const b = Number.parseInt(result[3], 16);
   return `${r}, ${g}, ${b}`;
 };
 
-interface SignalSyncProps {
-  onNavigate?: (direction: 'left' | 'right') => void;
+
+interface WelcomeFutureThemeProps {
   setCurrentScreenId: any;
   formData: any;
   imageSrc: any;
@@ -52,13 +58,12 @@ interface SignalSyncProps {
   currentScreenId: any;
   profileData: any;
 }
-
 // Icon Components
 const AlarmClock: React.FC = () => {
   return (
-    <div className="relative size-[1.433rem] shrink-0" data-name="alarm-clock">
+    <div className="relative shrink-0 h-[1.433rem] w-[1.433rem]" data-name="alarm-clock">
       <svg
-        className="block size-full"
+        className="block h-full w-full"
         fill="none"
         preserveAspectRatio="none"
         viewBox="0 0 23 23"
@@ -77,9 +82,9 @@ const Target: React.FC = () => {
   const { primaryColor } = useColor();
 
   return (
-    <div className="relative size-[1.433rem] shrink-0" data-name="target">
+    <div className="relative shrink-0 h-[1.433rem] w-[1.433rem]" data-name="target">
       <svg
-        className="block size-full"
+        className="block h-full w-full"
         fill="none"
         preserveAspectRatio="none"
         viewBox="0 0 23 23"
@@ -104,11 +109,11 @@ const LocationCrosshairs: React.FC = () => {
 
   return (
     <div
-      className="relative size-[1.433rem] shrink-0"
+      className="relative shrink-0 h-[1.433rem] w-[1.433rem]"
       data-name="location-crosshairs"
     >
       <svg
-        className="block size-full"
+        className="block h-full w-full"
         fill="none"
         preserveAspectRatio="none"
         viewBox="0 0 23 23"
@@ -135,9 +140,9 @@ const Book: React.FC = () => {
   const { primaryColor } = useColor();
 
   return (
-    <div className="relative size-[1.433rem] shrink-0" data-name="book">
+    <div className="relative shrink-0 h-[1.433rem] w-[1.433rem]" data-name="book">
       <svg
-        className="block size-full"
+        className="block h-full w-full"
         fill="none"
         preserveAspectRatio="none"
         viewBox="0 0 23 23"
@@ -161,9 +166,9 @@ const UserSquare: React.FC = () => {
   const { primaryColor } = useColor();
 
   return (
-    <div className="relative size-[1.433rem] shrink-0" data-name="user-square">
+    <div className="relative shrink-0 h-[1.433rem] w-[1.433rem]" data-name="user-square">
       <svg
-        className="block size-full"
+        className="block h-full w-full"
         fill="none"
         preserveAspectRatio="none"
         viewBox="0 0 23 23"
@@ -182,8 +187,7 @@ const UserSquare: React.FC = () => {
   );
 };
 
-const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
-  onNavigate,
+const WelcomeFutureTheme: React.FC<WelcomeFutureThemeProps> = ({
   setCurrentScreenId,
   formData,
   imageSrc,
@@ -201,24 +205,25 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
   const [dragStartY, setDragStartY] = useState(0);
   const [dragStartScrollTop, setDragStartScrollTop] = useState(0);
 
+  const { id } = useParams();
   const [profile, setProfile] = useState<any>([]);
   const [apSkl, setApSkl] = useState([]);
   const [authorArray, setauthorArray] = useState<any[]>([]);
-  const [showComplete, setShowComplete] = useState(false);
-  const [blackScreen, setBlackScreen] = useState(false);
+  const [showComplete, setShowComplete] = useState(false)
+  const [blackScreen, setBlackScreen] = useState(false)
   const [loaded, setLoaded] = useState(false);
   const [LanguageContent, setLanguageContent] = useState({
-    GameTitleLanguage: formData?.gameTitle,
+    GameTitleLanguage: formData.gameTitle,
     StoryLineLanguage: formData?.gameStoryLine,
     AuthorNameLanguage: formData?.gameAuthorName,
-    LearnOutLanguage:
-      formData?.gameLearningOutcome !== ''
-        ? formData?.gameLearningOutcome?.split('\n')
-        : '',
+    LearnOutLanguage: formData?.gameLearningOutcome !== ''
+      ? formData?.gameLearningOutcome?.split('\n')
+      : '',
     AdditionalWelcomeNoteLanguage: formData?.gameAdditionalWelcomeNote,
   });
-  const useData = useContext(ProfileContext);
+  const useData = useContext(ProfileContext)
   const [gameId, setGameId] = useState();
+  console.log(gameId, 'gameidfromteh state')
   const [skills, setSkills] = useState([]);
 
   // 🔹 Keep gameId in state whenever formData changes
@@ -227,24 +232,22 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
       setGameId(formData.gameId);
     }
   }, [formData]);
-
   useEffect(() => {
-    console.log('formData changed:', formData);
+    console.log("formData changed:", formData);
     if (formData?.gameId) {
       setGameId(formData.gameId);
     }
   }, [formData]);
 
   useEffect(() => {
-    console.log('gameId state changed:', gameId);
+    console.log("gameId state changed:", gameId);
   }, [gameId]);
-
   useEffect(() => {
     if (!gameId) return; // ⛔ skip until gameId is ready
 
     async function fetchSkills() {
       const res = await getSkillsName(gameId);
-      if (res?.status === 'Success') {
+      if (res?.status === "Success") {
         setSkills(res.data);
       }
     }
@@ -258,7 +261,6 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
       setShowComplete(false);
     }, 1000);
   }, []);
-
   useEffect(() => {
     if (formData?.gameId) {
       fetch();
@@ -269,21 +271,25 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
     const result = await getGameById(formData?.gameId);
     if (result?.status !== 'Success') {
       setProfile([]);
+
     } else {
+
       setProfile(result.data);
     }
+    // const res = await getSkills();
+    // if (res?.status === 'Success') {
+    //   setApSkl(res?.data);
+    // }
     const res = await getSkillsName(formData.gameId);
-    if (res?.status === 'Success') {
+    if (res?.status === "Success") {
       setApSkl(res.data);
     }
   };
-
   const customStylesicon = {
     cursor: 'pointer',
     color: '#D9C7A2',
     marginRight: '4px',
   };
-
   const TraslationContent = () => {
     if (profileData?.Audiogetlanguage.length !== 0) {
       const GameLanguageFilter = profileData?.Audiogetlanguage.filter(
@@ -306,70 +312,61 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
           (key: any) => key?.fieldName === 'gameAdditionalWelcomeNote',
         );
         if (TitleGameFiltered.length > 0) {
-          const GameTitle = TitleGameFiltered[0]?.content
-            ? TitleGameFiltered[0]?.content
-            : formData?.gameTitle;
+          const GameTitle = TitleGameFiltered[0]?.content ? TitleGameFiltered[0]?.content : formData?.gameTitle;
           setLanguageContent((prev: any) => ({
             ...prev,
             GameTitleLanguage: GameTitle,
           }));
+          // (GameTitle);
         }
         if (StoryLineFiltered.length > 0) {
-          const storyLine = StoryLineFiltered[0]?.content
-            ? StoryLineFiltered[0]?.content
-            : formData?.gameStoryLine;
+          const storyLine = StoryLineFiltered[0]?.content ? StoryLineFiltered[0]?.content : formData?.gameStoryLine;
           setLanguageContent((prev: any) => ({
             ...prev,
             StoryLineLanguage: storyLine,
           }));
         }
         if (LearningOutFiltered.length > 0) {
-          const LearningOutComes = LearningOutFiltered[0]?.content
-            ? LearningOutFiltered[0]?.content?.split('\n')
-            : formData?.gameLearningOutcome?.split('\n');
+
+          const LearningOutComes = LearningOutFiltered[0]?.content ? LearningOutFiltered[0]?.content?.split('\n') : formData?.gameLearningOutcome?.split('\n');
           setLanguageContent((prev: any) => ({
             ...prev,
             LearnOutLanguage: LearningOutComes,
           }));
         }
         if (AuthorNameFiltered.length > 0) {
-          const AuthorName = AuthorNameFiltered[0]?.content
-            ? AuthorNameFiltered[0]?.content
-            : formData?.gameAuthorName;
+          const AuthorName = AuthorNameFiltered[0]?.content ? AuthorNameFiltered[0]?.content : formData?.gameAuthorName;
           setLanguageContent((prev: any) => ({
             ...prev,
             AuthorNameLanguage: AuthorName,
           }));
         }
         if (AdditionalWelNoteFiltered.length > 0) {
-          const AdditionalWelcomeNote = AdditionalWelNoteFiltered[0]?.content
-            ? AdditionalWelNoteFiltered[0]?.content
-            : formData?.gameAdditionalWelcomeNote;
+          const AdditionalWelcomeNote = AdditionalWelNoteFiltered[0]?.content ? AdditionalWelNoteFiltered[0]?.content : formData?.gameAdditionalWelcomeNote;
           setLanguageContent((prev: any) => ({
             ...prev,
             AdditionalWelcomeNoteLanguage: AdditionalWelcomeNote,
           }));
         }
       }
-    } else {
+      //formData.gameTitle
+    }
+    else {
       setLanguageContent((prev: any) => ({
         GameTitleLanguage: formData.gameTitle,
         StoryLineLanguage: formData?.gameStoryLine,
         AuthorNameLanguage: formData?.gameAuthorName,
-        LearnOutLanguage:
-          formData?.gameLearningOutcome !== ''
-            ? formData?.gameLearningOutcome?.split('\n')
-            : '',
+        LearnOutLanguage: formData?.gameLearningOutcome !== ''
+          ? formData?.gameLearningOutcome?.split('\n')
+          : '',
         AdditionalWelcomeNoteLanguage: formData?.gameAdditionalWelcomeNote,
       }));
     }
-  };
-
+  }
   useEffect(() => {
     fetch();
     TraslationContent();
   }, []);
-
   useEffect(() => {
     fetch();
     TraslationContent();
@@ -388,7 +385,6 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
     );
     return matchedSkill ? matchedSkill.name : null;
   };
-
   const renderContent = () => {
     const linkRegex = /(https?:\/\/[^\s]+)/g;
     let parts;
@@ -413,15 +409,6 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
     return <React.Fragment>{contentWithLinks}</React.Fragment>;
   };
 
-  const extractLink = (text: any) => {
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    if (text) {
-      const urls = text?.match(urlRegex);
-      return urls ? urls[0] : null;
-    }
-    return null;
-  };
-
   const containerRef = useRef<any>(null);
   let lastScrollTop = 0;
 
@@ -429,15 +416,18 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
     const container = containerRef?.current;
     if (!container) return; // Early return if container is not available
 
+
     const handleScroll = () => {
       let currentScrollTop = container?.scrollTop;
 
       if (currentScrollTop > lastScrollTop) {
         // Scrolling down
+        // container.classList.add('content-box');
         container.classList.add('scrollbar-down');
       } else {
         // Scrolling up
         container.classList.remove('scrollbar-down');
+        // container.classList.remove('content-box');
       }
 
       lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
@@ -458,50 +448,52 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
     formData.gameIsShowAuhorName === 'true' ||
     formData.gameIsShowAdditionalWelcomeNote === 'true';
 
+
   const getDurationMarginTop = (title: string) => {
-    if (typeof window !== 'undefined' && window.innerWidth <= 950) {
-      return '10%'; // Always 10% for screens ≤ 870px
+    if (typeof window !== "undefined" && window.innerWidth <= 950) {
+      return "10%"; // Always 10% for screens ≤ 870px
     }
 
-    if (!title) return '2px'; // default for larger screens
+    if (!title) return "2px"; // default for larger screens
     const length = title.length;
 
-    if (length <= 20) return '25px';
-    if (length <= 25) return '40px';
-    if (length <= 40) return '50px';
-    return '55px';
+    if (length <= 20) return "25px";
+    if (length <= 25) return "40px";
+    if (length <= 40) return "50px";
+    return "55px";
   };
+
 
   // Info Card Component
   const InfoCard: React.FC<{
     icon: React.ReactNode;
-    content: React.ReactNode;
+    content: string;
     fontSize?: string;
-  }> = ({ icon, content, fontSize = '13.378px' }) => {
+  }> = ({ icon, content, fontSize = "13.378px" }) => {
     return (
       <div
-        className="relative w-full shrink-0 rounded-[0.6rem] backdrop-blur-[2.499rem] backdrop-filter"
+        className="backdrop-blur-[2.499rem] backdrop-filter relative rounded-[0.6rem] shrink-0 w-full"
         style={{
           background: `linear-gradient(21deg, rgba(10, 10, 10, 0.70) -10.76%, rgba(${hexToRgb(
-            primaryColor,
+            primaryColor
           )}, 0.4) 127.18%)`,
         }}
       >
-        <div className="relative flex size-full flex-row items-center overflow-clip">
-          <div className="relative box-border flex w-full flex-row content-stretch items-center justify-start gap-2.5 px-[1.2rem] py-[0.717rem]">
+        <div className="flex flex-row items-center overflow-clip relative h-full w-full">
+          <div className="box-border content-stretch flex flex-row gap-2.5 items-center justify-start px-[1.2rem] py-[0.717rem] relative w-full">
             {icon}
             <div
-              className="font-rubik relative flex shrink-0 flex-col justify-center text-left font-medium leading-[0] tracking-[-0.04px] text-[#ffffff]"
+              className="flex flex-col font-rubik font-medium justify-center leading-[0] relative shrink-0 text-[#ffffff] text-left tracking-[-0.04px]"
               style={{ fontSize }}
             >
-              <p className="adjustLetterSpacing block whitespace-pre leading-[1.893rem]">
+              <p className="adjustLetterSpacing block leading-[1.893rem] whitespace-pre">
                 {content}
               </p>
             </div>
           </div>
         </div>
-        <div className="pointer-events-none absolute inset-0 shadow-[1.599px_3.199px_12.795px_0px_inset_rgba(248,248,248,0.06)]" />
-        <div className="pointer-events-none absolute inset-0 rounded-[0.6rem] border-[1.2px] border-solid border-[rgba(255,255,255,0.4)]" />
+        <div className="absolute inset-0 pointer-events-none shadow-[1.599px_3.199px_12.795px_0px_inset_rgba(248,248,248,0.06)]" />
+        <div className="absolute border-[1.2px] border-[rgba(255,255,255,0.4)] border-solid inset-0 pointer-events-none rounded-[0.6rem]" />
       </div>
     );
   };
@@ -510,25 +502,25 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
   const SkillCard: React.FC<{ title: string }> = ({ title }) => {
     return (
       <div
-        className="relative min-h-px min-w-px shrink-0 grow basis-0 rounded-[0.6rem] backdrop-blur-[2.499rem] backdrop-filter"
+        className="backdrop-blur-[2.499rem] backdrop-filter basis-0 grow min-h-px min-w-px relative rounded-[0.6rem] shrink-0"
         style={{
           background: `linear-gradient(21deg, rgba(10, 10, 10, 0.70) -10.76%, rgba(${hexToRgb(
-            primaryColor,
+            primaryColor
           )}, 0.4) 127.18%)`,
         }}
       >
-        <div className="relative flex size-full flex-row items-center overflow-clip">
-          <div className="relative box-border flex w-full flex-row content-stretch items-center justify-start gap-2.5 px-[1.2rem] py-[0.717rem]">
+        <div className="flex flex-row items-center overflow-clip relative h-full w-full">
+          <div className="box-border content-stretch flex flex-row gap-2.5 items-center justify-start px-[1.2rem] py-[0.717rem] relative w-full">
             <Target />
-            <div className="font-rubik relative flex shrink-0 flex-col justify-center text-nowrap text-left text-sm font-medium leading-[0] tracking-[-0.04px] text-[#ffffff]">
-              <p className="adjustLetterSpacing block whitespace-pre leading-[1.893rem]">
+            <div className="flex flex-col font-rubik font-medium justify-center leading-[0] relative shrink-0 text-[#ffffff] text-sm text-left text-nowrap tracking-[-0.04px]">
+              <p className="adjustLetterSpacing block leading-[1.893rem] whitespace-pre">
                 {title}
               </p>
             </div>
           </div>
         </div>
-        <div className="pointer-events-none absolute inset-0 shadow-[1.599px_3.199px_12.795px_0px_inset_rgba(248,248,248,0.06)]" />
-        <div className="pointer-events-none absolute inset-0 rounded-[0.6rem] border-[1.2px] border-solid border-[rgba(255,255,255,0.4)]" />
+        <div className="absolute inset-0 pointer-events-none shadow-[1.599px_3.199px_12.795px_0px_inset_rgba(248,248,248,0.06)]" />
+        <div className="absolute border-[1.2px] border-[rgba(255,255,255,0.4)] border-solid inset-0 pointer-events-none rounded-[0.6rem]" />
       </div>
     );
   };
@@ -573,7 +565,7 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
         dragStartScrollTop + deltaPercentage * scrollableHeight;
       const clampedScrollTop = Math.max(
         0,
-        Math.min(scrollableHeight, newScrollTop),
+        Math.min(scrollableHeight, newScrollTop)
       );
 
       scrollContainer.scrollTop = clampedScrollTop;
@@ -583,7 +575,7 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
         scrollableHeight > 0 ? clampedScrollTop / scrollableHeight : 0;
       setScrollPosition(newScrollPercentage);
     },
-    [isDragging, dragStartY, dragStartScrollTop],
+    [isDragging, dragStartY, dragStartScrollTop]
   );
 
   const handleMouseUp = useCallback(() => {
@@ -592,26 +584,27 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
 
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      document.body.style.userSelect = 'none'; // Prevent text selection while dragging
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+      document.body.style.userSelect = "none"; // Prevent text selection while dragging
 
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-        document.body.style.userSelect = '';
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+        document.body.style.userSelect = "";
       };
     }
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   const handleStartMission = () => {
-    onNavigate?.('right');
+    useData?.setMotionEffect(true);
+    setTimeout(() => setCurrentScreenId(12), 300);
   };
 
   return (
     <div
-      className="relative h-screen w-full overflow-hidden bg-black/90 bg-cover bg-center bg-no-repeat"
-      // style={{ backgroundImage: `url('${imgBackground}')` }}
+      className="relative w-full h-screen overflow-hidden bg-no-repeat bg-center bg-cover bg-black/90"
+      style={{ backgroundImage: `url('${imgBackground}')` }}
     >
       <style>{`
         .scrollbar-hidden {
@@ -628,244 +621,364 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
                   }
       `}</style>
 
-      {/* Main Content */}
-      <div className="flex-grow-1 flex h-full flex-col items-center justify-center pt-0">
+      <div className="w-full px-4 sm:px-6 lg:px-8 pb-4 sm:pb-6 lg:pb-8 relative h-full flex">
+        {/* Top Navigation Bar */}
         <div
-          className="relative flex h-full max-h-[40rem] w-full max-w-[54.875rem] flex-col items-center justify-start gap-5 overflow-hidden rounded-[2.375rem] px-10 py-8 backdrop-blur-[3.724rem] backdrop-filter"
-          style={{
-            background: `linear-gradient(21deg, rgba(0, 0, 0, 0.40) -10.76%, rgba(${hexToRgb(
-              primaryColor,
-            )}, 0.2) 127.18%)`,
-          }}
-        >
-          {/* Background Effects */}
-          <div className="pointer-events-none absolute right-[-12.5rem] top-[3.125rem] z-0 flex h-[27.69rem] w-[31.188rem] items-center justify-center mix-blend-lighten">
-            <div className="flex-none rotate-[33.283deg]">
-              <div className="relative h-[15.169rem] w-[27.352rem]">
-                <div className="absolute bottom-[-167.188%] left-[-92.72%] right-[-92.72%] top-[-167.188%]">
-                  <svg
-                    className="block size-full"
-                    fill="none"
-                    preserveAspectRatio="none"
-                    viewBox="0 0 1250 1055"
-                  >
-                    <g
-                      filter="url(#filter0_f_bg1)"
-                      id="Ellipse 7187"
-                      opacity="0.2"
-                      style={{ mixBlendMode: 'lighten' }}
-                    >
-                      <ellipse
-                        cx="624.819"
-                        cy="527.354"
-                        fill={primaryColor}
-                        rx="218.819"
-                        ry="121.354"
-                      />
-                    </g>
-                    <defs>
-                      <filter
-                        colorInterpolationFilters="sRGB"
-                        filterUnits="userSpaceOnUse"
-                        height="1054.26"
-                        id="filter0_f_bg1"
-                        width="1249.19"
-                        x="0.223328"
-                        y="0.223328"
-                      >
-                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                        <feBlend
-                          in="SourceGraphic"
-                          in2="BackgroundImageFix"
-                          mode="normal"
-                          result="shape"
-                        />
-                        <feGaussianBlur
-                          result="effect1_foregroundBlur_bg1"
-                          stdDeviation="202.888"
-                        />
-                      </filter>
-                    </defs>
-                  </svg>
-                </div>
-              </div>
-            </div>
+          //  style={{ backgroundImage: `url('${topNav}')` }}
+          className="absolute top-0 left-0 right-0 h-[5.5rem] flex items-center justify-between  bg-cover bg-center bg-no-repeat px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-6">
+            <TopNavButton icon="home" />
+            <TopNavButton icon="map" />
           </div>
-
-          <div className="pointer-events-none absolute left-[-12.5rem] top-[3.125rem] z-0 flex h-[27.69rem] w-[31.188rem] items-center justify-center mix-blend-lighten">
-            <div className="flex-none rotate-[33.283deg]">
-              <div className="relative h-[15.169rem] w-[27.352rem]">
-                <div className="absolute bottom-[-167.188%] left-[-92.72%] right-[-92.72%] top-[-167.188%]">
-                  <svg
-                    className="block size-full"
-                    fill="none"
-                    preserveAspectRatio="none"
-                    viewBox="0 0 1250 1055"
-                  >
-                    <g
-                      filter="url(#filter0_f_bg2)"
-                      id="Ellipse 7187"
-                      opacity="0.2"
-                      style={{ mixBlendMode: 'lighten' }}
-                    >
-                      <ellipse
-                        cx="624.819"
-                        cy="527.354"
-                        fill={primaryColor}
-                        rx="218.819"
-                        ry="121.354"
-                      />
-                    </g>
-                    <defs>
-                      <filter
-                        colorInterpolationFilters="sRGB"
-                        filterUnits="userSpaceOnUse"
-                        height="1054.26"
-                        id="filter0_f_bg2"
-                        width="1249.19"
-                        x="0.223328"
-                        y="0.223328"
-                      >
-                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                        <feBlend
-                          in="SourceGraphic"
-                          in2="BackgroundImageFix"
-                          mode="normal"
-                          result="shape"
-                        />
-                        <feGaussianBlur
-                          result="effect1_foregroundBlur_bg2"
-                          stdDeviation="202.888"
-                        />
-                      </filter>
-                    </defs>
-                  </svg>
+          <div className="flex items-center gap-4">
+            <StatusBar label="50" icon="progress" />
+            <StatusBar label="100" icon="coin" />
+            <TopNavButton icon="ranking" />
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="translate-y-1">
+                  <TopNavButton icon="settings" />
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Top Section - */}
-          <div className="relative z-10 mb-4 flex w-full flex-col items-center gap-4">
-            {/* Welcome Title */}
-            <div className="relative">
-              <h1
-                className="mb-1 text-center text-4xl font-normal tracking-[0.005rem] text-white"
+              </DialogTrigger>
+              <DialogContent
+                className="sm:max-w-2xl rounded-[2rem] px-7 py-6 border-none shadow-lg"
                 style={{
-                  textShadow: `rgba(${hexToRgb(
-                    primaryColor,
-                  )}, 0.5) 0px 0px 9px`,
+                  background: `linear-gradient(151.477deg, rgb(0,0,0) 17.606%, rgba(${hexToRgb(
+                    primaryColor
+                  )}, 0.6) 218.68%)`,
+                  border: `1px solid linear-gradient(151.477deg, rgb(0, 0, 0) 17.606%, rgba(${hexToRgb(
+                    primaryColor
+                  )}, 0.4) 188.68%)`,
+                  boxShadow: "0px 0px 23.4px 0px rgba(0, 0, 0, 0.50)",
                 }}
               >
-                Welcome
-              </h1>
+                <h2
+                  className="text-center text-3xl py-1 font-medium"
+                  style={{
+                    color: primaryColor,
+                    textShadow: `0 0 9px rgba(${hexToRgb(primaryColor)}, 0.49)`,
+                  }}
+                >
+                  Settings
+                </h2>
+
+                {/* Decorative Line */}
+                <div className="flex items-center justify-center relative w-full">
+                  <div className="w-full">
+                    <div className="h-[1px] relative w-full">
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          background: `linear-gradient(90deg, transparent 0%, ${primaryColor} 48%, transparent 100%)`,
+                          opacity: 0.995,
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-8 mt-3 mb-2 max-w-md mx-auto w-full pt-5 pb-3">
+                  <div className="flex flex-col gap-10 mb-4">
+                    {/* Music Volume */}
+                    <div className="flex flex-col gap-1 items-center">
+                      <label className="text-2xl font-rubik mb-2 text-white font-normal tracking-[-0.005rem]">
+                        Music Volume
+                      </label>
+                      <Slider
+                        defaultValue={[40]}
+                        max={100}
+                        step={1}
+                        className="w-full"
+                      // trackClassName="bg-white/70"
+                      // thumbClassName="bg-white border border-gray-300 shadow-sm"
+                      />
+                    </div>
+                    {/* Voice Over Volume */}
+                    <div className="flex flex-col gap-1 items-center">
+                      <label className="text-2xl font-rubik mb-2 text-white font-normal tracking-[-0.005rem]">
+                        Voice over volume
+                      </label>
+                      <Slider
+                        defaultValue={[20]}
+                        max={100}
+                        step={1}
+                        className="w-full"
+                      // trackClassName="bg-white/70"
+                      // thumbClassName="bg-white border border-gray-300 shadow-sm"
+                      />
+                    </div>
+                    {/* Color Picker */}
+                    <div className="flex flex-col gap-1 items-center">
+                      <label className="text-2xl font-rubik mb-2 text-white font-normal tracking-[-0.005rem]">
+                        Set Theme
+                      </label>
+                      <ColorPicker />
+                    </div>
+                  </div>
+                  {/* Okay button */}
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-[5.75rem] text-lg h-11 py-2 px-4 rounded-3xl transition-all duration-200 hover:scale-110 text-white hover:text-white mx-auto"
+                      style={{
+                        background: `linear-gradient(275.041deg
+                              ,
+                                rgba(${hexToRgb(
+                          primaryColor
+                        )}, 0.7) 7.25%, rgba(0, 0, 0, 0.8) 84.803%)`,
+                        border: `1px solid ${primaryColor}`,
+                        boxShadow: `0px 0px 15.9542px 0px rgba(3, 51, 38, 0.8)`,
+                      }}
+                    >
+                      Okay
+                    </Button>
+                  </DialogTrigger>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="h-full flex-grow flex flex-col justify-center items-center pt-[7.25rem]">
+          <div
+            className="flex flex-col gap-5 max-h-[40rem] max-w-[54.875rem] overflow-hidden h-full w-full items-center justify-start rounded-[2.375rem] relative px-10 py-8 backdrop-filter backdrop-blur-[3.724rem]"
+            style={{
+              background: `linear-gradient(21deg, rgba(0, 0, 0, 0.40) -10.76%, rgba(${hexToRgb(
+                primaryColor
+              )}, 0.2) 127.18%)`,
+            }}
+          >
+            {/* Background Effects */}
+            <div className="absolute flex h-[27.69rem] items-center justify-center right-[-12.5rem] mix-blend-lighten top-[3.125rem] w-[31.188rem] pointer-events-none z-0">
+              <div className="flex-none rotate-[33.283deg]">
+                <div className="h-[15.169rem] relative w-[27.352rem]">
+                  <div className="absolute bottom-[-167.188%] left-[-92.72%] right-[-92.72%] top-[-167.188%]">
+                    <svg
+                      className="block h-full w-full"
+                      fill="none"
+                      preserveAspectRatio="none"
+                      viewBox="0 0 1250 1055"
+                    >
+                      <g
+                        filter="url(#filter0_f_bg1)"
+                        id="Ellipse 7187"
+                        opacity="0.2"
+                        style={{ mixBlendMode: "lighten" }}
+                      >
+                        <ellipse
+                          cx="624.819"
+                          cy="527.354"
+                          fill={primaryColor}
+                          rx="218.819"
+                          ry="121.354"
+                        />
+                      </g>
+                      <defs>
+                        <filter
+                          colorInterpolationFilters="sRGB"
+                          filterUnits="userSpaceOnUse"
+                          height="1054.26"
+                          id="filter0_f_bg1"
+                          width="1249.19"
+                          x="0.223328"
+                          y="0.223328"
+                        >
+                          <feFlood
+                            floodOpacity="0"
+                            result="BackgroundImageFix"
+                          />
+                          <feBlend
+                            in="SourceGraphic"
+                            in2="BackgroundImageFix"
+                            mode="normal"
+                            result="shape"
+                          />
+                          <feGaussianBlur
+                            result="effect1_foregroundBlur_bg1"
+                            stdDeviation="202.888"
+                          />
+                        </filter>
+                      </defs>
+                    </svg>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Signal Sync with Decorative Lines */}
-            <div className="relative box-border flex w-full shrink-0 flex-row content-stretch items-center justify-start gap-1.5 p-0">
-              <div className="relative flex min-h-px min-w-px shrink-0 grow basis-0 items-center justify-center">
-                <div className="w-full flex-none rotate-[180deg] scale-y-[-100%]">
-                  <div className="relative h-0 w-full">
-                    <div className="absolute bottom-0 left-0 right-0 top-[-1px]">
-                      <svg
-                        className="block size-full"
-                        fill="none"
-                        preserveAspectRatio="none"
-                        viewBox="0 0 318 1"
+            <div className="absolute flex h-[27.69rem] items-center justify-center left-[-12.5rem] mix-blend-lighten top-[3.125rem] w-[31.188rem] pointer-events-none z-0">
+              <div className="flex-none rotate-[33.283deg]">
+                <div className="h-[15.169rem] relative w-[27.352rem]">
+                  <div className="absolute bottom-[-167.188%] left-[-92.72%] right-[-92.72%] top-[-167.188%]">
+                    <svg
+                      className="block h-full w-full"
+                      fill="none"
+                      preserveAspectRatio="none"
+                      viewBox="0 0 1250 1055"
+                    >
+                      <g
+                        filter="url(#filter0_f_bg2)"
+                        id="Ellipse 7187"
+                        opacity="0.2"
+                        style={{ mixBlendMode: "lighten" }}
                       >
-                        <line
-                          id="Line 732"
-                          stroke="url(#paint0_linear_signal)"
-                          x2="317.267"
-                          y1="0.5"
-                          y2="0.5"
+                        <ellipse
+                          cx="624.819"
+                          cy="527.354"
+                          fill={primaryColor}
+                          rx="218.819"
+                          ry="121.354"
                         />
-                        <defs>
-                          <linearGradient
-                            gradientUnits="userSpaceOnUse"
-                            id="paint0_linear_signal"
-                            x1="317.267"
-                            x2="0"
-                            y1="0.999899"
-                            y2="0.999906"
-                          >
-                            <stop stopColor={primaryColor} stopOpacity="0" />
-                            <stop
-                              offset="0.484375"
-                              stopColor={primaryColor}
-                              stopOpacity="0.994792"
-                            />
-                            <stop
-                              offset="1"
-                              stopColor={primaryColor}
-                              stopOpacity="0"
-                            />
-                          </linearGradient>
-                        </defs>
-                      </svg>
+                      </g>
+                      <defs>
+                        <filter
+                          colorInterpolationFilters="sRGB"
+                          filterUnits="userSpaceOnUse"
+                          height="1054.26"
+                          id="filter0_f_bg2"
+                          width="1249.19"
+                          x="0.223328"
+                          y="0.223328"
+                        >
+                          <feFlood
+                            floodOpacity="0"
+                            result="BackgroundImageFix"
+                          />
+                          <feBlend
+                            in="SourceGraphic"
+                            in2="BackgroundImageFix"
+                            mode="normal"
+                            result="shape"
+                          />
+                          <feGaussianBlur
+                            result="effect1_foregroundBlur_bg2"
+                            stdDeviation="202.888"
+                          />
+                        </filter>
+                      </defs>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Top Section - */}
+            <div className="flex flex-col items-center gap-4 w-full relative z-10 mb-4">
+              {/* Welcome Title */}
+              <div className="relative">
+                <h1
+                  className="text-4xl font-normal tracking-[0.005rem] text-center text-white mb-1"
+                  style={{ textShadow: `rgba(${hexToRgb(primaryColor)}, 0.5) 0px 0px 9px` }}
+                >
+                  {LanguageContent?.GameTitleLanguage || 'Welcome'}
+                </h1>
+              </div>
+
+              {/* Signal Sync with Decorative Lines */}
+              <div className="box-border content-stretch flex flex-row gap-1.5 items-center justify-start p-0 relative shrink-0 w-full">
+                <div className="basis-0 flex grow items-center justify-center min-h-px min-w-px relative shrink-0">
+                  <div className="flex-none rotate-[180deg] scale-y-[-100%] w-full">
+                    <div className="h-0 relative w-full">
+                      <div className="absolute bottom-0 left-0 right-0 top-[-1px]">
+                        <svg
+                          className="block h-full w-full"
+                          fill="none"
+                          preserveAspectRatio="none"
+                          viewBox="0 0 318 1"
+                        >
+                          <line
+                            id="Line 732"
+                            stroke="url(#paint0_linear_signal)"
+                            x2="317.267"
+                            y1="0.5"
+                            y2="0.5"
+                          />
+                          <defs>
+                            <linearGradient
+                              gradientUnits="userSpaceOnUse"
+                              id="paint0_linear_signal"
+                              x1="317.267"
+                              x2="0"
+                              y1="0.999899"
+                              y2="0.999906"
+                            >
+                              <stop stopColor={primaryColor} stopOpacity="0" />
+                              <stop
+                                offset="0.484375"
+                                stopColor={primaryColor}
+                                stopOpacity="0.994792"
+                              />
+                              <stop
+                                offset="1"
+                                stopColor={primaryColor}
+                                stopOpacity="0"
+                              />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="flex flex-col justify-center leading-[0] not-italic relative shrink-0 text-4xl text-center text-nowrap tracking-[0.08px]"
+                  style={{ color: primaryColor }}
+                >
+                  <p className="adjustLetterSpacing block leading-[3.859rem] whitespace-pre">
+                    Signal Sync
+                  </p>
+                </div>
+                <div className="basis-0 flex grow items-center justify-center min-h-px min-w-px relative shrink-0">
+                  <div className="flex-none rotate-[180deg] scale-y-[-100%] w-full">
+                    <div className="h-0 relative w-full">
+                      <div className="absolute bottom-0 left-0 right-0 top-[-1px]">
+                        <svg
+                          className="block h-full w-full"
+                          fill="none"
+                          preserveAspectRatio="none"
+                          viewBox="0 0 318 1"
+                        >
+                          <line
+                            id="Line 732"
+                            stroke="url(#paint0_linear_signal2)"
+                            x2="317.267"
+                            y1="0.5"
+                            y2="0.5"
+                          />
+                          <defs>
+                            <linearGradient
+                              gradientUnits="userSpaceOnUse"
+                              id="paint0_linear_signal2"
+                              x1="317.267"
+                              x2="0"
+                              y1="0.999899"
+                              y2="0.999906"
+                            >
+                              <stop stopColor={primaryColor} stopOpacity="0" />
+                              <stop
+                                offset="0.484375"
+                                stopColor={primaryColor}
+                                stopOpacity="0.994792"
+                              />
+                              <stop
+                                offset="1"
+                                stopColor={primaryColor}
+                                stopOpacity="0"
+                              />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div
-                className="relative flex shrink-0 flex-col justify-center text-nowrap text-center text-4xl not-italic leading-[0] tracking-[0.08px]"
-                style={{ color: primaryColor }}
-              >
-                <p className="adjustLetterSpacing block whitespace-pre leading-[3.859rem]">
-                  Signal Sync
-                </p>
-              </div>
-              <div className="relative flex min-h-px min-w-px shrink-0 grow basis-0 items-center justify-center">
-                <div className="w-full flex-none rotate-[180deg] scale-y-[-100%]">
-                  <div className="relative h-0 w-full">
-                    <div className="absolute bottom-0 left-0 right-0 top-[-1px]">
-                      <svg
-                        className="block size-full"
-                        fill="none"
-                        preserveAspectRatio="none"
-                        viewBox="0 0 318 1"
-                      >
-                        <line
-                          id="Line 732"
-                          stroke="url(#paint0_linear_signal2)"
-                          x2="317.267"
-                          y1="0.5"
-                          y2="0.5"
-                        />
-                        <defs>
-                          <linearGradient
-                            gradientUnits="userSpaceOnUse"
-                            id="paint0_linear_signal2"
-                            x1="317.267"
-                            x2="0"
-                            y1="0.999899"
-                            y2="0.999906"
-                          >
-                            <stop stopColor={primaryColor} stopOpacity="0" />
-                            <stop
-                              offset="0.484375"
-                              stopColor={primaryColor}
-                              stopOpacity="0.994792"
-                            />
-                            <stop
-                              offset="1"
-                              stopColor={primaryColor}
-                              stopOpacity="0"
-                            />
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            {/* Duration */}
-            {formData.gameIsShowGameDuration === 'true' && (
-              <div className="relative box-border flex shrink-0 flex-row content-stretch items-center justify-start gap-3.5 p-0">
+              {/* Duration */}
+              <div className="box-border content-stretch flex flex-row gap-3.5 items-center justify-start p-0 relative shrink-0">
                 <AlarmClock />
-                <div className="font-rubik relative flex shrink-0 flex-col justify-center text-nowrap text-center text-[1.433rem] font-medium tracking-[-0.09px] text-[#ffffff]">
+                <div className="flex flex-col font-rubik font-medium justify-center relative shrink-0 text-[#ffffff] text-[1.433rem] text-center text-nowrap tracking-[-0.09px]">
                   <p className="adjustLetterSpacing block whitespace-pre">
                     {formData.gameDuration > 1
                       ? Math.round(formData.gameDuration * 0.6) + ' minutes'
@@ -873,146 +986,333 @@ const WelcomeFutureTheme: React.FC<SignalSyncProps> = ({
                   </p>
                 </div>
               </div>
-            )}
-          </div>
+            </div>
 
-          {/* Content Box with Interactive Custom Scrollbar */}
-          <div className="max-md2x:flex-1 max-md2x:overflow-y-auto relative z-10 h-[17.75rem] w-full flex-shrink-0">
-            {/* Scrollable Content Container */}
-            <div
-              ref={scrollContainerRef}
-              className="scrollbar-hidden relative h-full overflow-y-auto overflow-x-hidden pl-5 pr-8"
-              onScroll={handleScroll}
-            >
-              <div className="relative box-border flex flex-col content-stretch items-center justify-start gap-6">
-                {/* Story Description */}
-                {formData.gameIsShowStoryline === 'true' && (
-                  <div className="flex w-full flex-col justify-center">
-                    <p className="adjustLetterSpacing font-rubik block text-justify text-base font-normal leading-[1.851rem] tracking-[-0.09px] text-white">
-                      {LanguageContent?.StoryLineLanguage}
+            {/* Content Box with Interactive Custom Scrollbar */}
+            <div className="w-full h-[17.75rem] relative z-10 flex-shrink-0 max-lg:flex-1 max-lg:overflow-y-auto">
+              {/* Scrollable Content Container */}
+              <div
+                ref={scrollContainerRef}
+                className="scrollbar-hidden relative h-full overflow-y-auto overflow-x-hidden pr-8 pl-5"
+                onScroll={handleScroll}
+              >
+                <div className="box-border content-stretch flex flex-col gap-6 items-center justify-start relative">
+                  {/* Story Description */}
+                  <div className=" text-white flex flex-col justify-center w-full">
+                    <p>
+                      {LanguageContent?.StoryLineLanguage || formData?.gameStoryLine}
                     </p>
-                  </div>
-                )}
 
-                {/* Skills Section */}
-                {formData.gameIsShowSkill === 'true' && (
-                  <div className="relative box-border flex w-full shrink-0 flex-col content-stretch items-center justify-center gap-1 p-0">
-                    <div className="font-glancyr-neue flex w-full shrink-0 flex-col justify-center text-left text-base tracking-[0.1529px] text-[#ffffff]">
-                      <p className="block text-xl leading-normal">SKILLS</p>
+                  </div>
+
+                  {/* Skills Section */}
+                  <div className="box-border content-stretch flex flex-col gap-1 items-center justify-center p-0 relative shrink-0 w-full">
+                    <div className="flex flex-col font-glancyr-neue justify-center shrink-0 text-[#ffffff] text-base text-left tracking-[0.1529px] w-full">
+                      <p className="block leading-normal text-xl">SKILLS</p>
                     </div>
-                    <div className="relative box-border flex w-full shrink-0 flex-row content-stretch items-center justify-start gap-2.5 p-0">
-                      {authorArray?.map((skillId: any, index: any) => {
-                        const skillName = findSkillName(skillId);
-                        return skillName ? (
-                          <SkillCard key={index} title={skillName} />
-                        ) : null;
+                    <div className="box-border content-stretch flex flex-row gap-2.5 items-center justify-start p-0 relative shrink-0 w-full">
+                      {authorArray?.map((authorItem, index) => {
+                        const skillName = findSkillName(authorItem);
+                        return skillName ? <SkillCard key={index} title={skillName} /> : null;
                       })}
-                      
+
                     </div>
                   </div>
-                )}
 
-                {/* Learning Outcome */}
-                {formData.gameIsShowLearningOutcome === 'true' && (
-                  <div className="relative box-border flex w-full shrink-0 flex-col content-stretch items-center justify-center gap-1 p-0">
-                    <div className="font-glancyr-neue flex w-full shrink-0 flex-col justify-center text-left text-base tracking-[0.1529px] text-[#ffffff]">
-                      <p className="block text-xl leading-normal">
+                  {/* Learning Outcome */}
+                  <div className="box-border content-stretch flex flex-col gap-1 items-center justify-center p-0 relative shrink-0 w-full">
+                    <div className="flex flex-col font-glancyr-neue justify-center shrink-0 text-[#ffffff] text-base text-left tracking-[0.1529px] w-full">
+                      <p className="block leading-normal text-xl">
                         LEARNING OUTCOME
                       </p>
                     </div>
-                    {LanguageContent?.LearnOutLanguage?.map(
-                      (outcome: any, index: any) => (
-                        <InfoCard
-                          key={index}
-                          icon={<LocationCrosshairs />}
-                          content={outcome}
-                        />
-                      ),
-                    )}
-                  </div>
-                )}
+                    {LanguageContent?.LearnOutLanguage?.map((item: any, index: any) => {
+                      const bulletIndex = item.indexOf('\u2022');
+                      const content = bulletIndex !== -1 ? item.slice(bulletIndex + 1).trim() : item;
+                      return <InfoCard key={index} icon={<LocationCrosshairs />} content={content} />;
+                    })}
 
-                {/* NOTE Section */}
-                {formData.gameIsShowAdditionalWelcomeNote === 'true' && (
-                  <div className="relative box-border flex w-full shrink-0 flex-col content-stretch items-center justify-center gap-1 p-0">
-                    <div className="font-glancyr-neue flex w-full shrink-0 flex-col justify-center text-left text-base tracking-[0.1529px] text-[#ffffff]">
-                      <p className="block text-xl leading-normal">NOTE</p>
+                  </div>
+
+                  {/* NOTE Section */}
+                  <div className="box-border content-stretch flex flex-col gap-1 items-center justify-center p-0 relative shrink-0 w-full">
+                    <div className="flex flex-col font-glancyr-neue justify-center shrink-0 text-[#ffffff] text-base text-left tracking-[0.1529px] w-full">
+                      <p className="block leading-normal text-xl">NOTE</p>
                     </div>
                     <InfoCard
                       icon={<Book />}
-                      content={renderContent()}
+                      content="This scenario focuses on emotional intelligence in high-pressure team environments"
                       fontSize="14px"
                     />
                   </div>
-                )}
 
-                {/* AUTHOR Section */}
-                <div className="relative box-border flex w-full shrink-0 flex-col content-stretch items-center justify-center gap-1 p-0 pb-4">
-                  <div className="font-glancyr-neue flex w-full shrink-0 flex-col justify-center text-left text-base tracking-[0.1529px] text-[#ffffff]">
-                    <p className="block text-xl leading-normal">AUTHOR</p>
+                  {/* AUTHOR Section */}
+                  <div className="box-border content-stretch flex flex-col gap-1 items-center justify-center p-0 relative shrink-0 w-full pb-4">
+                    <div className="flex flex-col font-glancyr-neue justify-center shrink-0 text-[#ffffff] text-base text-left tracking-[0.1529px] w-full">
+                      <p className="block leading-normal text-xl">AUTHOR</p>
+                    </div>
+                    {LanguageContent?.AuthorNameLanguage && (
+                      <InfoCard icon={<UserSquare />} content={LanguageContent.AuthorNameLanguage} />
+                    )}
+
                   </div>
-                  <InfoCard
-                    icon={<UserSquare />}
-                    content="Dr. Elena Rodriguez"
-                    fontSize="14px"
+                </div>
+              </div>
+
+              {/* Interactive Custom Scrollbar */}
+              <div
+                ref={scrollbarRef}
+                className="absolute right-2 -top-0 lg:right-0 lg:-top-1 w-4 h-full flex items-center justify-center"
+              >
+                {/* Track Line */}
+                <div
+                  className="w-0.5 h-[90%] rounded-full opacity-60 pointer-events-none"
+                  style={{ backgroundColor: primaryColor }}
+                />
+
+                {/* Interactive Thumb with Outer Circle */}
+                <div
+                  className={`absolute h-3 w-3 lg:w-5 lg:h-5 rounded-full transition-all duration-150 ease-out cursor-pointer ${isDragging ? "scale-110" : "hover:scale-110"
+                    }`}
+                  style={{
+                    top: `${6.5 + scrollPosition * 90}%`,
+                    transform: "translateY(-50%)",
+                  }}
+                  onMouseDown={handleThumbMouseDown}
+                >
+                  {/* Outer Ring */}
+                  <div
+                    className="absolute inset-0 h-3 w-3 lg:w-5 lg:h-5 rounded-full border-2 opacity-40"
+                    style={{
+                      borderColor: primaryColor,
+                      boxShadow:
+                        window.innerWidth <= 934
+                          ? `0 0 4px ${primaryColor}, 0 0 1px ${primaryColor}`
+                          : `0 0 12px ${primaryColor}, 0 0 6px ${primaryColor}`,
+                      filter:
+                        window.innerWidth <= 934
+                          ? `drop-shadow(0 0 3px ${primaryColor})`
+                          : `drop-shadow(0 0 8px ${primaryColor})`,
+                    }}
+                  />
+
+                  {/* Inner Circle */}
+                  <div
+                    className="absolute inset-0 h-1.5 w-1.5 lg:w-2 lg:h-2 rounded-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    style={{
+                      backgroundColor: primaryColor,
+                      boxShadow: `0 0 4px ${primaryColor}`,
+                    }}
                   />
                 </div>
               </div>
             </div>
 
-            {/* Interactive Custom Scrollbar */}
-            <div
-              ref={scrollbarRef}
-              className="md2x:right-0 md2x:-top-1 absolute -top-0 right-2 flex h-full w-4 items-center justify-center"
-            >
-              {/* Track Line */}
-              <div
-                className="pointer-events-none h-[90%] w-0.5 rounded-full opacity-60"
-                style={{ backgroundColor: primaryColor }}
-              />
-
-              {/* Interactive Thumb with Outer Circle */}
-              <div
-                className={`md2x:w-5 md2x:h-5 absolute h-3 w-3 cursor-pointer rounded-full transition-all duration-150 ease-out ${
-                  isDragging ? 'scale-110' : 'hover:scale-110'
-                }`}
+            {/* Action Button - Below Content Box */}
+            <div className="flex items-center justify-center relative shrink-0 mt-1 z-10">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleStartMission()}
+                className="min-w-[8.125rem] h-12 py-2 px-4 rounded-3xl transition-all duration-200 hover:scale-110 text-white hover:text-white font-rubik text-lg font-medium"
                 style={{
-                  top: `${6.5 + scrollPosition * 90}%`,
-                  transform: 'translateY(-50%)',
+                  background: `linear-gradient(100deg ,
+                        rgba(${hexToRgb(
+                    primaryColor
+                  )}) -27.25%, rgba(0, 0, 0, 0.8) 127.803%)`,
+                  border: `1px solid rgba(${hexToRgb(primaryColor)}, 0.5)`,
+                  boxShadow: `0px 0px 21.786px 0px rgba(${hexToRgb(
+                    primaryColor
+                  )}, 0.4)`,
                 }}
-                onMouseDown={handleThumbMouseDown}
               >
-                {/* Outer Ring */}
-                <div
-                  className="absolute inset-0 rounded-full border-2 border-white/30"
-                  style={{
-                    backgroundColor: primaryColor,
-                    opacity: 0.8,
-                  }}
-                />
-              </div>
+                Next
+              </Button>
             </div>
-          </div>
 
-          {/* Start Mission Button */}
-          <div className="relative z-10 mt-6 flex w-full justify-center">
-            <Button
-              onClick={handleStartMission}
-              className="rounded-[2rem] border-2 border-white/20 bg-gradient-to-r from-black/80 to-black/60 px-8 py-3 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+            {/* Inset Shadow Border */}
+            <div
+              className="absolute inset-0 pointer-events-none rounded-[2.375rem]"
               style={{
-                background: `linear-gradient(135deg, rgba(${hexToRgb(
-                  primaryColor,
-                )}, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%)`,
-                borderColor: primaryColor,
-                boxShadow: `0 0 20px rgba(${hexToRgb(primaryColor)}, 0.5)`,
+                boxShadow: `0px 0px 11px 0px inset rgba(${hexToRgb(
+                  primaryColor
+                )}, 0.3)`,
               }}
-            >
-              Start Mission
-            </Button>
+            />
           </div>
         </div>
       </div>
     </div>
+  );
+};
+
+// Helper Components (same as Note.tsx)
+const TopNavButton: React.FC<{ icon: string }> = ({ icon }) => {
+  const { primaryColor } = useColor();
+
+  const IconElement = () => {
+    switch (icon) {
+      case "home":
+        return <CustomHomeIcon color={primaryColor} size={20} />;
+      case "map":
+        return <CustomMapIcon color={primaryColor} size={20} />;
+      case "ranking":
+        return <CustomRankingIcon color={primaryColor} size={20} />;
+      case "settings":
+        return <CustomSettingsIcon color={primaryColor} size={20} />;
+      default:
+        return <IconComponent type={icon} color={primaryColor} />;
+    }
+  };
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      className="w-12 h-12 !px-0 py-0 relative rounded-2xl hover:scale-110 transition-transform duration-300 group"
+      style={{
+        borderRadius: "16px",
+        boxShadow: "0px 0px 23.386px 0px rgba(0, 0, 0, 0.50)",
+        background: `linear-gradient(151.477deg, rgba(${hexToRgb(
+          primaryColor
+        )}, 0.3), rgb(0, 0, 0))`,
+      }}
+    >
+      <div
+        className="absolute top-[1px] left-[1px] right-[1px] bottom-[1px] rounded-2xl flex items-center justify-center"
+        style={{
+          background: `linear-gradient(151.477deg, rgb(0, 0, 0) 17.606%, rgba(${hexToRgb(
+            primaryColor
+          )}, 0.5) 188.68%)`,
+          borderRadius: "16px",
+          zIndex: 1,
+        }}
+      >
+        {icon === "ranking" ? (
+          <CustomRankingIcon color={primaryColor} className="!h-10 !w-10" />
+        ) : icon === "settings" ? (
+          <CustomSettingsIcon color={primaryColor} className="!h-10 !w-10 -mb-1" />
+        ) : (
+          <IconElement />
+        )}
+      </div>
+    </Button>
+  );
+};
+
+const StatusBar: React.FC<{ label: string; icon?: string }> = ({
+  label,
+  icon,
+}) => {
+  const { primaryColor } = useColor();
+
+  return (
+    <div className="flex items-center">
+      {icon && (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="w-12 h-12 !px-0 py-0 relative rounded-2xl"
+          style={{
+            borderRadius: "16px",
+            boxShadow: "0px 0px 23.386px 0px rgba(0, 0, 0, 0.50)",
+            background: `linear-gradient(151.477deg, rgba(${hexToRgb(
+              primaryColor
+            )}, 0.3), rgb(0, 0, 0))`,
+          }}
+        >
+          <div
+            className="absolute top-[1px] left-[1px] right-[1px] bottom-[1px] rounded-2xl flex items-center justify-center backdrop-blur-xs"
+            style={{
+              background: `linear-gradient(151.477deg, rgb(0, 0, 0) 17.606%, rgba(${hexToRgb(
+                primaryColor
+              )}, 0.5) 188.68%)`,
+              borderRadius: "16px",
+              zIndex: 1,
+            }}
+          >
+            {icon === "coin" ? (
+              <CustomCoinIcon color={primaryColor} className="!h-12 !w-12" />
+            ) : icon === "progress" ? (
+              <span
+                className="text-white font-medium text-[0.813rem] font-rubik -tracking-[0.007rem] text-shadow-[0px_2.867px_8.6px_rgba(0,_255,_187,_0.30)]"
+                style={{ color: primaryColor }}
+              >
+                {label}%
+              </span>
+            ) : (
+              <IconComponent type={icon} color={primaryColor} />
+            )}
+          </div>
+        </Button>
+      )}
+      {label === "50" ? (
+        <div className="flex-1 relative -ml-2.5 min-w-24">
+          <div
+            className="w-full h-8 rounded-[0.625rem] overflow-hidden"
+            style={{
+              background: `linear-gradient(179.484deg, rgb(0, 0, 0) 17.606%, rgba(${hexToRgb(
+                primaryColor
+              )}, 0.4) 188.68%)`,
+              border: `1px solid rgba(${hexToRgb(primaryColor)}, 0.1)`,
+              boxShadow: "0px 0px 15.3543px 0px rgba(0,0,0,0.5)",
+            }}
+          >
+            <div
+              className="h-full transition-all duration-500 ease-out rounded-[0.625rem] shadow-[0px_0px_2.378px_0px_rgba(0,_255,_187,_0.30)_inset,_0px_2.867px_8.6px_0px_rgba(0,_255,_187,_0.60)]"
+              style={{
+                width: `${(Number(label) / 100) * 100}%`,
+                backgroundColor: primaryColor,
+                boxShadow: `0px 0px 9.93511px 0px rgba(184,184,184,0.2)`,
+              }}
+            />
+          </div>
+        </div>
+      ) : (
+        <Badge
+          variant="secondary"
+          className="h-8 px-4 flex items-center -ml-1.5 rounded-[0.625rem] min-w-24 font-rubik"
+          style={{
+            background: `linear-gradient(170.484deg, rgb(0, 0, 0) 17.606%, rgba(${hexToRgb(
+              primaryColor
+            )}, 0.4) 188.68%)`,
+            border: `1px solid rgba(${hexToRgb(primaryColor)}, 0.2)`,
+            boxShadow: "0px 0px 23.3864px 0px rgba(0,0,0,0.5)",
+          }}
+        >
+          <span className="text-white font-medium text-[0.813rem]">
+            {label}
+          </span>
+        </Badge>
+      )}
+    </div>
+  );
+};
+const IconComponent: React.FC<{ type: string; color: string }> = ({
+  type,
+  color,
+}) => {
+  const getIconPath = () => {
+    switch (type) {
+      case "ranking":
+        return svgPaths2.p1a822c00;
+      case "home":
+        return svgPaths2.p3bf15400;
+      case "map":
+        return svgPaths2.p285e4100;
+      case "settings":
+        return svgPaths2.p2037cc80;
+      case "coin":
+        return svgPaths2.p1444db00;
+      default:
+        return svgPaths2.p1444db00;
+    }
+  };
+
+  return (
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+      <path d={getIconPath()} fill={color} />
+    </svg>
   );
 };
 

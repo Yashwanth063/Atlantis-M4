@@ -236,15 +236,15 @@ useEffect(() => {
   };
 
 
-  const extractLink = (text: any) => {
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    if (text) {
-      const urls = text?.match(urlRegex);
+  // const extractLink = (text: any) => {
+  //   const urlRegex = /(https?:\/\/[^\s]+)/g;
+  //   if (text) {
+  //     const urls = text?.match(urlRegex);
 
-      return urls ? urls[0] : null;
-    }
-    return null;
-  };
+  //     return urls ? urls[0] : null;
+  //   }
+  //   return null;
+  // };
 
   const containerRef = useRef<any>(null);
   let lastScrollTop = 0;

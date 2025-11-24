@@ -4075,7 +4075,7 @@ useEffect(() => {
                 case 1:
                   return (
                     <>
-                      <Box
+                      {/* <Box
                         w={'100%'}
                         h={'100vh'}
                         alignItems={'center'}
@@ -4109,10 +4109,10 @@ useEffect(() => {
                             />
                           </Box>
                         </Box>
-                      </Box> 
+                      </Box>  */}
 
                        {/* <ColorProvider> */}
-                        {/* <WelcomeFutureTheme
+                        <WelcomeFutureTheme
                           intro={audio}
                           currentScreenId={currentScreenId}
                           setCurrentScreenId={setCurrentScreenId}
@@ -4121,7 +4121,7 @@ useEffect(() => {
                           screen={preloadedAssets.Screen5}
                           preloadedAssets={preloadedAssets}
                           profileData={profileData}
-                        /> */}
+                        />
                       {/* </ColorProvider> */}
                     </>
                   );
