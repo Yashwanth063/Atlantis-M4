@@ -22,6 +22,8 @@ import {
 // import imgCharacter from "/images/character.png";
 import topNav from "../../../../../src/assets/img/NewUI_Images/top-nav-bg.png"
 import imgBackground from "../../../../../src/assets/img/NewUI_Images/background.png";
+import imgPlatform from "../../../../../src/assets/img/NewUI_Images/platform.png";
+
 import { useColor } from "../../../../../src/components/ui/ColorContext";
 import ColorPicker from "../../../../../src/components/ui/ColorPicker";
 import { Dialog, DialogContent, DialogTrigger } from "../../../../../src/components/ui/dialog";
@@ -557,7 +559,7 @@ const CharacterSelectionFutureTheme: React.FC<PlayGamesProps & {
                             {/* Platform */}
                             <div className="w-full max-w-[80%] pl-[19%] absolute bottom-0">
                                 <img
-                                    // src={imgPlatform || "/placeholder.svg"}
+                                    src={imgPlatform || "/placeholder.svg"}
                                     alt="platform"
                                     className="w-full h-full object-contain"
                                 />

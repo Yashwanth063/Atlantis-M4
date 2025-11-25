@@ -37,7 +37,7 @@ import ReflectionFutureTheme from './FutureTheme/ReflectionFutureTheme';
 import ThankyouFutureTheme from './FutureTheme/ThankyouFutureTheme';
 // import GameIntroScreenFutureTheme from './FutureTheme/GameIntroFutureTheme';
 import TakeawayFutureTheme from './FutureTheme/TakeawayFutureTheme';
-import ChaptersFutureTheme from './FutureTheme/ChaptersFutureTheme';
+// import ChaptersFutureTheme from './FutureTheme/ChaptersFutureTheme';
 import WelcomeFutureTheme from './FutureTheme/WelcomeFutureTheme'
 
 // import BackgroundGLB from './playcards/BackgroundFeedback';
@@ -4179,7 +4179,7 @@ useEffect(() => {
                 case 3:
                   return (
                     <>
-                       {gameInfo?.gameData?.gameTheme === 'false' ? (
+                       {/* {gameInfo?.gameData?.gameTheme === 'false' ? (
                       <Box
                         w={'100%'}
                         h={'100vh'}
@@ -4217,7 +4217,7 @@ useEffect(() => {
                           </Box>
                         </Box>
                       </Box>
-                       ):(
+                       ):( */}
                       //  <ReflectionFutureTheme/>
 
                        <ReflectionFutureTheme
@@ -4248,7 +4248,7 @@ useEffect(() => {
                                 setLearnerPlayingDetails
                               }
                             />
-                       )}
+                       {/* )} */}
                     </>
                   );
                 case 4:
@@ -4300,7 +4300,7 @@ useEffect(() => {
                 case 5:
                   return (
                     <>
-                       {gameInfo?.gameData?.gameTheme === 'false' ? (
+                       {/* {gameInfo?.gameData?.gameTheme === 'false' ? (
                       <Box
                         w={'100%'}
                         h={'100vh'}
@@ -4346,7 +4346,7 @@ useEffect(() => {
                           </Box>
                         </Box>
                       </Box>
-                       ):(
+                       ):( */}
                         <ThankyouFutureTheme
                               setCurrentScreenId={setCurrentScreenId}
                               formData={gameInfo?.gameData}
@@ -4373,7 +4373,7 @@ useEffect(() => {
                               }
                               AssignId={AssignId}
                             />
-                       )}
+                       {/* )} */}
                     </>
                   );
                 case 6:

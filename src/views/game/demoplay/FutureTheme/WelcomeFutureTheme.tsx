@@ -18,8 +18,8 @@ import {
   CustomRankingIcon,
   CustomSettingsIcon,
 } from '../../../../components/ui/CustomIcons';
-import imgBackground from '../../../../assets/img/NewUI_Images/background.png';
-import topNav from '../../../../assets/img/NewUI_Images/topnav.png';
+import imgBackground from '../../../../../src/assets/img/NewUI_Images/background.png';
+import topNav from '../../../../../src/assets/img/NewUI_Images/top-nav-bg.png';
 import { useColor } from '../../../../components/ui/ColorContext';
 import ColorPicker from '../../../../components/ui/ColorPicker';
 import { Slider } from '../../../../components/ui/slider';
@@ -467,7 +467,7 @@ const WelcomeFutureTheme: React.FC<WelcomeFutureThemeProps> = ({
   // Info Card Component
   const InfoCard: React.FC<{
     icon: React.ReactNode;
-    content: string;
+    content: React.ReactNode;
     fontSize?: string;
   }> = ({ icon, content, fontSize = "13.378px" }) => {
     return (
@@ -624,7 +624,7 @@ const WelcomeFutureTheme: React.FC<WelcomeFutureThemeProps> = ({
       <div className="w-full px-4 sm:px-6 lg:px-8 pb-4 sm:pb-6 lg:pb-8 relative h-full flex">
         {/* Top Navigation Bar */}
         <div
-          //  style={{ backgroundImage: `url('${topNav}')` }}
+          style={{ backgroundImage: `url('${topNav}')` }}
           className="absolute top-0 left-0 right-0 h-[5.5rem] flex items-center justify-between  bg-cover bg-center bg-no-repeat px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
             <TopNavButton icon="home" />
@@ -871,7 +871,7 @@ const WelcomeFutureTheme: React.FC<WelcomeFutureThemeProps> = ({
                   className="text-4xl font-normal tracking-[0.005rem] text-center text-white mb-1"
                   style={{ textShadow: `rgba(${hexToRgb(primaryColor)}, 0.5) 0px 0px 9px` }}
                 >
-                  {LanguageContent?.GameTitleLanguage || 'Welcome'}
+                  Welcome
                 </h1>
               </div>
 
@@ -926,7 +926,7 @@ const WelcomeFutureTheme: React.FC<WelcomeFutureThemeProps> = ({
                   style={{ color: primaryColor }}
                 >
                   <p className="adjustLetterSpacing block leading-[3.859rem] whitespace-pre">
-                    Signal Sync
+                    {LanguageContent?.GameTitleLanguage || 'Welcome'}
                   </p>
                 </div>
                 <div className="basis-0 flex grow items-center justify-center min-h-px min-w-px relative shrink-0">
@@ -1041,7 +1041,7 @@ const WelcomeFutureTheme: React.FC<WelcomeFutureThemeProps> = ({
                     </div>
                     <InfoCard
                       icon={<Book />}
-                      content="This scenario focuses on emotional intelligence in high-pressure team environments"
+                      content={renderContent()}  
                       fontSize="14px"
                     />
                   </div>
