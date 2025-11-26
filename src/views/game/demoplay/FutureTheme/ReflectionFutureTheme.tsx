@@ -13,7 +13,7 @@ import {
   CustomRankingIcon,
   CustomSettingsIcon,
 } from "../../../../components/ui/CustomIcons";
-// import imgBackground from "../../../../assets/img/NewUI_Images/background.png";
+import imgBackground from "../../../../assets/img/NewUI_Images/background.png";
 import { useColor } from "../../../../components/ui/ColorContext";
 import ColorPicker from "../../../../components/ui/ColorPicker";
 import { Textarea } from "../../../../components/ui/textarea";
@@ -76,7 +76,6 @@ const ReflectionFutureTheme: React.FC<ReflectionFutureThemeProps> = ({
   setFirstLoading,
   learnerPlayList,
   setLearnerPlayingDetails,
-  onNavigate
 }) => {
 
   const { primaryColor } = useColor();
@@ -134,16 +133,10 @@ const ReflectionFutureTheme: React.FC<ReflectionFutureThemeProps> = ({
         validateFunc();
       }, [answers]);
   
-      useEffect(() => {
-        StroredAnsRefLang();
-        // setReflectionFilter(reflectionQuestions);
-      }, [reflectionQuestions])
-  
-  
       const updateAnswer = (e: any, index: any) => {
   
-   const refId = index;
-   const ansValue = e.target.value;
+      const refId = index;
+       const ansValue = e.target.value;
   
         const updatedAnswers = [...answers];
         updatedAnswers[index] = { ...updatedAnswers[index], text: e.target.value };
@@ -235,9 +228,7 @@ const ReflectionFutureTheme: React.FC<ReflectionFutureThemeProps> = ({
         else {
   
           setCurrentScreenId(6);
-  
-          // setCurrentScreenId(13);
-          return false;
+            return false;
         }
       }
       useEffect(() => {
@@ -248,7 +239,8 @@ const ReflectionFutureTheme: React.FC<ReflectionFutureThemeProps> = ({
           validateFunc();
         }
         StroredAnsRefLang();
-      }, [formData])
+      }, [formData]);
+
 
 
   const NavigationArrow: React.FC<{
@@ -440,7 +432,7 @@ const ReflectionFutureTheme: React.FC<ReflectionFutureThemeProps> = ({
   return (
     <div
       className="relative w-full h-screen overflow-hidden bg-no-repeat bg-center bg-cover bg-black/90"
-      // style={{ backgroundImage: `url('${imgBackground}')` }}
+      style={{ backgroundImage: `url('${imgBackground}')` }}
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 pb-4 sm:pb-6 lg:pb-8 relative h-full flex">
         {/* Top Navigation Bar */}
@@ -530,7 +522,7 @@ const ReflectionFutureTheme: React.FC<ReflectionFutureThemeProps> = ({
                     </div>
                     {/* Color Picker */}
                     <div className="flex flex-col gap-1 items-center">
-                      <label className="text-2xl font-rubik mb-2 text-white font-normal tracking-[-0.005rem]">
+                      <label className="text-2xl font-rubik mb-2 text-white font-normal tracking-tight">
                         Set Theme
                       </label>
                       <ColorPicker />
@@ -565,7 +557,7 @@ const ReflectionFutureTheme: React.FC<ReflectionFutureThemeProps> = ({
         {/* Reflection Content */}
         <div className="h-full flex-grow flex flex-col justify-center items-center pt-24">
           <div
-            className="flex flex-col gap-5 max-h-fit max-w-fit overflow-hidden h-full w-full items-center justify-start rounded-[2.375rem] relative px-10 py-8 backdrop-filter backdrop-blur-[3.724rem]"
+            className="flex flex-col gap-5 max-h-fit max-w-fit overflow-hidden h-full w-full items-center justify-start rounded-[2.375rem] relative px-10 py-8  backdrop-blur-[3.724rem]"
             style={{
               background: `linear-gradient(21deg, rgba(${hexToRgb(
                 primaryColor
@@ -575,7 +567,7 @@ const ReflectionFutureTheme: React.FC<ReflectionFutureThemeProps> = ({
             {/* Reflection Title */}
             <div className="relative">
               <h1
-                className="text-4xl font-normal tracking-[0.005rem] text-center"
+                className="text-4xl font-normal tracking-tight text-center"
                 style={{
                   color: primaryColor,
                   textShadow: `rgba(${hexToRgb(
@@ -603,7 +595,7 @@ const ReflectionFutureTheme: React.FC<ReflectionFutureThemeProps> = ({
             </div>
 
             {/* Questions Grid - Improved Layout */}
-            <div className="flex-1 w-full flex justify-center px-3 py-4 overflow-y-auto">
+            <div className="flex w-full flex justify-center px-3 py-4 overflow-y-auto">
               <div className="w-full max-w-[75rem] mx-auto">
                 <div className="relative">
                   {/* Responsive Grid Layout */}
@@ -666,6 +658,7 @@ const ReflectionFutureTheme: React.FC<ReflectionFutureThemeProps> = ({
             />
           </div>
         </div>
+        
       </div>
     </div>
   );
