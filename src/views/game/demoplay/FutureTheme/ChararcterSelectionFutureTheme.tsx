@@ -624,7 +624,7 @@ const CharacterSelectionFutureTheme: React.FC<PlayGamesProps & {
                     <div className="absolute bottom-16 left-12 right-12 flex justify-between items-center">
                         <NavigationArrow
                             direction="left"
-                            onClick={goToNextPage}
+                            onClick={goToPreviousPage}
                         />
                         <NavigationArrow
                             direction="right"

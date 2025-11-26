@@ -100,7 +100,7 @@ const Characterspage: React.FC<PlayGamesProps> = ({
   // });
 
   const [formState, setFormState] = useState<any>({
-    name: '', // ✅ Always start empty
+    name: '',
   });
 
   // useEffect(() => {
